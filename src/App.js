@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import FormComponent from "./components/form/Form";
+import Contacts from "./components/contacts/Contacts"
+import { useState } from "react";
+import { addInfo, editHandler } from "./utils/functions";
+import { ToastContainer } from "react-toastify";
+
+
+const initialState = {username:"", phoneNumber:"", gender:"NO INFO"}
 
 function App() {
+  const [info, setInfo] = useState(initialState)
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if(info?.id){
+      editHandler(info)
+    }else{
+      addInfo(info)
+    }
+    setInfo(initialState)
+    
+  };
+
+  const updateFormHandler = (item) => {
+    setInfo({...item})
+
+  }
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <FormComponent handleFormSubmit={handleFormSubmit} className="form" info={info} setInfo={setInfo}/>
+      <Contacts className="contact" updateFormHandler={updateFormHandler}/>
+      <ToastContainer/>
+
+      </div>
+  )
+  
 }
 
 export default App;
